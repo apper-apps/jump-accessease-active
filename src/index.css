@@ -1,0 +1,96 @@
+@import 'react-toastify/dist/ReactToastify.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom toast container styles */
+.Toastify__toast-container {
+  position: fixed;
+  z-index: 9999;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+}
+
+.Toastify__toast {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 2px solid #0066CC;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 12px 16px;
+  min-height: auto;
+}
+
+.Toastify__toast--success {
+  border-color: #00A656;
+}
+
+.Toastify__toast--error {
+  border-color: #D32F2F;
+}
+
+.Toastify__toast--warning {
+  border-color: #FFB400;
+}
+
+/* Global accessibility styles */
+.accessibility-text-size-80 { font-size: 0.8em !important; }
+.accessibility-text-size-90 { font-size: 0.9em !important; }
+.accessibility-text-size-100 { font-size: 1em !important; }
+.accessibility-text-size-110 { font-size: 1.1em !important; }
+.accessibility-text-size-125 { font-size: 1.25em !important; }
+.accessibility-text-size-150 { font-size: 1.5em !important; }
+.accessibility-text-size-175 { font-size: 1.75em !important; }
+.accessibility-text-size-200 { font-size: 2em !important; }
+
+.accessibility-high-contrast {
+  filter: contrast(150%) brightness(110%) !important;
+}
+
+.accessibility-high-contrast * {
+  color: #000000 !important;
+  background-color: #FFFFFF !important;
+  border-color: #000000 !important;
+}
+
+.accessibility-line-height-normal { line-height: 1.5 !important; }
+.accessibility-line-height-relaxed { line-height: 1.75 !important; }
+.accessibility-line-height-loose { line-height: 2 !important; }
+
+.accessibility-letter-spacing-normal { letter-spacing: 0 !important; }
+.accessibility-letter-spacing-wide { letter-spacing: 0.05em !important; }
+.accessibility-letter-spacing-wider { letter-spacing: 0.1em !important; }
+
+.accessibility-word-spacing-normal { word-spacing: 0 !important; }
+.accessibility-word-spacing-wide { word-spacing: 0.25em !important; }
+.accessibility-word-spacing-wider { word-spacing: 0.5em !important; }
+
+.accessibility-focus-visible *:focus {
+  outline: 3px solid #0066CC !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+}
+
+/* Override default focus styles */
+*:focus {
+  outline: 2px solid #0066CC;
+  outline-offset: 2px;
+}
+
+/* Ensure high contrast for widget itself */
+.accessibility-widget {
+  font-family: 'Inter', sans-serif;
+  color: #4A4A4A;
+  background-color: #FFFFFF;
+}
+
+/* Draggable widget styles */
+.widget-dragging {
+  user-select: none;
+  cursor: move;
+}
+
+.widget-dragging * {
+  pointer-events: none;
+}
