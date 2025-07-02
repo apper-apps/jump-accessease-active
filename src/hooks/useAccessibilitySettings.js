@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 
 const defaultSettings = {
   textSize: 100,
@@ -9,6 +9,7 @@ const defaultSettings = {
   keyboardNav: false,
   screenReaderMode: false,
   widgetPosition: 'bottom-right',
+  colorBlindFilter: 'none',
 };
 
 export const useAccessibilitySettings = () => {
@@ -38,6 +39,7 @@ export const useAccessibilitySettings = () => {
     const { body } = document;
     
     // Remove existing accessibility classes
+// Remove existing accessibility classes
     body.classList.remove(
       'accessibility-text-size-80',
       'accessibility-text-size-90',
@@ -57,7 +59,9 @@ export const useAccessibilitySettings = () => {
       'accessibility-word-spacing-normal',
       'accessibility-word-spacing-wide',
       'accessibility-word-spacing-wider',
-      'accessibility-focus-visible'
+      'accessibility-protanopia',
+      'accessibility-deuteranopia',
+      'accessibility-tritanopia',
     );
 
     // Apply text size
@@ -97,9 +101,35 @@ export const useAccessibilitySettings = () => {
       body.classList.add('accessibility-word-spacing-normal');
     }
 
-    // Apply keyboard navigation
+// Apply keyboard navigation
     if (newSettings.keyboardNav) {
       body.classList.add('accessibility-focus-visible');
+    }
+
+    // Apply color blindness filter
+    if (newSettings.colorBlindFilter && newSettings.colorBlindFilter !== 'none') {
+      body.classList.add(`accessibility-${newSettings.colorBlindFilter}`);
+    }
+
+    // Ensure SVG filters are present in the DOM
+    if (newSettings.colorBlindFilter !== 'none' && !document.getElementById('accessibility-filters')) {
+      const svgFilters = document.createElement('div');
+      svgFilters.innerHTML = `
+        <svg class="accessibility-filter-svg" id="accessibility-filters">
+          <defs>
+            <filter id="protanopia-filter">
+              <feColorMatrix type="matrix" values="0.567 0.433 0 0 0 0.558 0.442 0 0 0 0 0.242 0.758 0 0 0 0 0 1 0"/>
+            </filter>
+            <filter id="deuteranopia-filter">
+              <feColorMatrix type="matrix" values="0.625 0.375 0 0 0 0.7 0.3 0 0 0 0 0.3 0.7 0 0 0 0 0 1 0"/>
+            </filter>
+            <filter id="tritanopia-filter">
+              <feColorMatrix type="matrix" values="0.95 0.05 0 0 0 0 0.433 0.567 0 0 0 0.475 0.525 0 0 0 0 0 1 0"/>
+            </filter>
+          </defs>
+        </svg>
+      `;
+      document.body.appendChild(svgFilters);
     }
   };
 
@@ -130,6 +160,9 @@ export const useAccessibilitySettings = () => {
   const toggleScreenReaderMode = () => {
     setSettings(prev => ({ ...prev, screenReaderMode: !prev.screenReaderMode }));
   };
+const updateColorBlindFilter = (filter) => {
+    setSettings(prev => ({ ...prev, colorBlindFilter: filter }));
+  };
 
   const resetSettings = () => {
     setSettings(defaultSettings);
@@ -144,6 +177,7 @@ export const useAccessibilitySettings = () => {
     updateWordSpacing,
     toggleKeyboardNav,
     toggleScreenReaderMode,
-    resetSettings,
+    updateColorBlindFilter,
+resetSettings,
   };
 };

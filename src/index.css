@@ -94,3 +94,35 @@
 .widget-dragging * {
   pointer-events: none;
 }
+
+/* Color blindness filter definitions */
+.accessibility-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Color blindness filter classes */
+.accessibility-protanopia {
+  filter: url(#protanopia-filter) !important;
+}
+
+.accessibility-deuteranopia {
+  filter: url(#deuteranopia-filter) !important;
+}
+
+.accessibility-tritanopia {
+  filter: url(#tritanopia-filter) !important;
+}
+
+/* SVG filter definitions for color blindness simulation */
+.accessibility-filter-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+}

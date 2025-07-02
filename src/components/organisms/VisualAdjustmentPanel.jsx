@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 import ApperIcon from '@/components/ApperIcon';
 import ToggleSwitch from '@/components/atoms/ToggleSwitch';
 
-const VisualAdjustmentPanel = ({ settings, onToggleHighContrast }) => {
+const VisualAdjustmentPanel = ({ settings, onToggleHighContrast, onUpdateColorBlindFilter }) => {
   return (
     <div className="space-y-6">
       {/* High Contrast Mode */}
@@ -60,23 +61,82 @@ const VisualAdjustmentPanel = ({ settings, onToggleHighContrast }) => {
           </p>
         </div>
 
-        {/* Color Blind Support (Coming Soon) */}
-        <div className="bg-background/50 p-4 rounded-lg border-2 border-dashed border-primary/20">
-          <div className="flex items-center justify-between mb-2">
+{/* Color Blind Support */}
+        <div className="bg-background p-4 rounded-lg border-2 border-primary/10">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
-                <ApperIcon name="Palette" className="text-secondary/50" size={16} />
+              <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
+                <ApperIcon name="Palette" className="text-white" size={20} />
               </div>
               <div>
-                <h4 className="font-medium text-secondary/70">Color Blind Support</h4>
-                <p className="text-xs text-secondary/50">Coming Soon</p>
+                <h3 className="text-lg font-semibold text-secondary">
+                  Color Blindness Filters
+                </h3>
+                <p className="text-sm text-secondary/70">
+                  Simulate different types of color vision deficiencies
+                </p>
               </div>
             </div>
-            <div className="w-12 h-6 bg-secondary/20 rounded-full"></div>
           </div>
-          <p className="text-sm text-secondary/50">
-            Enhanced color patterns for color vision deficiencies
-          </p>
+          
+          <div className="space-y-3">
+            {/* Filter Selection */}
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: 'none', name: 'None', desc: 'Normal vision' },
+                { id: 'protanopia', name: 'Protanopia', desc: 'Red-blind' },
+                { id: 'deuteranopia', name: 'Deuteranopia', desc: 'Green-blind' },
+                { id: 'tritanopia', name: 'Tritanopia', desc: 'Blue-blind' }
+              ].map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => {
+                    onUpdateColorBlindFilter(filter.id);
+                    toast.success(`${filter.name} filter ${filter.id === 'none' ? 'disabled' : 'applied'}`);
+                  }}
+                  className={`p-3 rounded-lg border-2 transition-all duration-200 text-left ${
+                    settings.colorBlindFilter === filter.id
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-primary/20 hover:border-primary/40 text-secondary'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-medium text-sm">{filter.name}</span>
+                    {settings.colorBlindFilter === filter.id && (
+                      <ApperIcon name="Check" size={16} className="text-primary" />
+                    )}
+                  </div>
+                  <p className="text-xs opacity-70">{filter.desc}</p>
+                  
+                  {/* Visual Preview */}
+                  <div className="mt-2 flex space-x-1">
+                    {['#FF0000', '#00FF00', '#0000FF', '#FFFF00'].map((color, idx) => (
+                      <div
+                        key={idx}
+                        className={`w-4 h-4 rounded-sm ${
+                          filter.id === 'protanopia' ? 'filter-protanopia' :
+                          filter.id === 'deuteranopia' ? 'filter-deuteranopia' :
+                          filter.id === 'tritanopia' ? 'filter-tritanopia' : ''
+                        }`}
+                        style={{ 
+                          backgroundColor: color,
+                          filter: filter.id === 'protanopia' ? 'url(#protanopia-filter)' :
+                                 filter.id === 'deuteranopia' ? 'url(#deuteranopia-filter)' :
+                                 filter.id === 'tritanopia' ? 'url(#tritanopia-filter)' : 'none'
+                        }}
+                      />
+                    ))}
+                  </div>
+                </button>
+              ))}
+            </div>
+            
+            <div className="text-sm text-secondary/70 space-y-1">
+              <p>• Filters simulate different types of color vision deficiencies</p>
+              <p>• Helps test website accessibility for color-blind users</p>
+              <p>• Applied to the entire page content</p>
+            </div>
+          </div>
         </div>
 
         {/* Dyslexia Support (Coming Soon) */}
@@ -99,18 +159,20 @@ const VisualAdjustmentPanel = ({ settings, onToggleHighContrast }) => {
         </div>
       </div>
 
-      {/* Current Status */}
+{/* Current Status */}
       <div className="bg-accent/10 p-4 rounded-lg border-2 border-accent/20">
         <div className="flex items-center space-x-3 mb-2">
           <ApperIcon name="CheckCircle" className="text-accent" size={20} />
-          <h4 className="font-medium text-secondary">High Contrast Active</h4>
+          <h4 className="font-medium text-secondary">Visual Settings Active</h4>
         </div>
-        <p className="text-sm text-secondary/70">
-          {settings.highContrast 
-            ? 'High contrast mode is currently enabled'
-            : 'High contrast mode is currently disabled'
-          }
-        </p>
+        <div className="text-sm text-secondary/70 space-y-1">
+          <p>
+            High contrast: {settings.highContrast ? 'Enabled' : 'Disabled'}
+          </p>
+          <p>
+            Color filter: {settings.colorBlindFilter === 'none' ? 'None' : settings.colorBlindFilter}
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ const WidgetPanel = ({
   onUpdateWordSpacing,
   onToggleKeyboardNav,
   onToggleScreenReaderMode,
+  onUpdateColorBlindFilter,
 }) => {
   const renderActivePanel = () => {
     switch (activeTab) {
@@ -31,11 +32,12 @@ const WidgetPanel = ({
             onUpdateWordSpacing={onUpdateWordSpacing}
           />
         );
-      case 'visual':
+case 'visual':
         return (
           <VisualAdjustmentPanel
             settings={settings}
             onToggleHighContrast={onToggleHighContrast}
+            onUpdateColorBlindFilter={onUpdateColorBlindFilter}
           />
         );
       case 'navigation':

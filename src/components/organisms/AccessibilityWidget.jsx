@@ -14,7 +14,7 @@ const AccessibilityWidget = () => {
   const widgetRef = useRef(null);
   const dragOffset = useRef({ x: 0, y: 0 });
 
-  const {
+const {
     settings,
     updateTextSize,
     toggleHighContrast,
@@ -23,6 +23,7 @@ const AccessibilityWidget = () => {
     updateWordSpacing,
     toggleKeyboardNav,
     toggleScreenReaderMode,
+    updateColorBlindFilter,
     resetSettings,
   } = useAccessibilitySettings();
 
@@ -135,7 +136,7 @@ const AccessibilityWidget = () => {
       {/* Widget Panel */}
       <AnimatePresence>
         {isOpen && (
-          <WidgetPanel
+<WidgetPanel
             activeTab={activeTab}
             settings={settings}
             onTabChange={handleTabChange}
@@ -148,6 +149,7 @@ const AccessibilityWidget = () => {
             onUpdateWordSpacing={updateWordSpacing}
             onToggleKeyboardNav={toggleKeyboardNav}
             onToggleScreenReaderMode={toggleScreenReaderMode}
+            onUpdateColorBlindFilter={updateColorBlindFilter}
           />
         )}
       </AnimatePresence>
